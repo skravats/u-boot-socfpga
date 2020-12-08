@@ -1,0 +1,95 @@
+// SPDX-License-Identifier: GPL-2.0+
+/*
+ * U-Boot additions
+ *
+ * Copyright (C) 2012 Altera Corporation <www.altera.com>
+ * Copyright (c) 2018 Simon Goldschmidt
+ * Copyright (C) 2020 Critical Link LLC <www.criticallink.com>
+ */
+
+/*
+ * This dtsi is not automagically included by socfpga_mitysom5cs-u-boot.dtsi,
+ * even though the prefix matches; it must be explicitly included by a
+ * higher-level dts(i).
+ */
+
+#include "socfpga-common-u-boot.dtsi"
+
+/{
+	chosen {
+		stdout-path = "serial0:115200n8";
+	};
+
+	aliases {
+		spi0 = "/soc/spi@ff705000"; /* qspi */
+		udc0 = &usb1;
+	};
+
+	soc {
+		/* In Linux we did this in socfpga.dtsi, but seems better to leave
+		 * that alone */
+		usbphy1: usbphy@1 {
+			#phy-cells = <0>;
+			compatible = "usb-nop-xceiv";
+			reset-gpio = <&porta 9 2>;
+			status = "okay";
+		};
+	};
+};
+
+&can0 {
+	status = "okay";
+};
+
+&watchdog0 {
+	status = "disabled";
+};
+
+&mmc {
+	u-boot,dm-pre-reloc;
+};
+
+&qspi {
+	u-boot,dm-pre-reloc;
+};
+
+/* Only the first NOR needs to be accessible before U-Boot proper is relocated,
+ * since it's the only one we can boot from. */
+&flash0 {
+	u-boot,dm-pre-reloc;
+};
+
+&uart0 {
+	clock-frequency = <100000000>;
+	u-boot,dm-pre-reloc;
+};
+
+&uart1 {
+	clock-frequency = <100000000>;
+};
+
+&porta {
+	bank-name = "porta";
+};
+
+&portb {
+	bank-name = "portb";
+};
+
+&portc {
+	bank-name = "portc";
+};
+
+&rtc0 {
+	/* U-Boot's driver is less inclusive than Linux's, so we have a stricter
+	 * compatible */
+	compatible = "abracon,ab1805";
+};
+
+&usb1 {
+	/* Our Linux device tree uses a custom compatible that's not implemented
+	 * in the U-Boot driver, so revert back to the compatible from
+	 * socfpga.dtsi */
+	compatible = "snps,dwc2";
+	phys = <&usbphy1>;
+};

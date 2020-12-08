@@ -1,0 +1,28 @@
+// SPDX-License-Identifier: GPL-2.0+
+/*
+ * U-Boot additions
+ *
+ * Copyright (C) 2012 Altera Corporation <www.altera.com>
+ * Copyright (c) 2018 Simon Goldschmidt
+ * Copyright (C) 2020 Critical Link LLC <www.criticallink.com>
+ */
+
+/*
+ * This dtsi is automagically included by the dts with the matching prefix
+ * (before "-u-boot.dtsi"). It pulls in our U-Boot-specific changes so the
+ * main dts can stay synced with its Linux counterpart.
+ */
+
+#include "socfpga_mitysom5cs-u-boot.dtsi"
+
+/{
+	/* With CONFIG_DISPLAY_BOARDINFO or CONFIG_DISPLAY_BOARDINFO_LATE, this
+	 * model string is displayed in the console */
+	model = "MitySOM-5CSX-H6-53B Altera SOCFPGA Cyclone V";
+};
+
+&flash1 {
+	/* The Linux device tree doesn't add the jedec compatible, without which
+	 * we have to manually probe to find this NOR */
+	compatible = "n25q256", "jedec,spi-nor";
+};

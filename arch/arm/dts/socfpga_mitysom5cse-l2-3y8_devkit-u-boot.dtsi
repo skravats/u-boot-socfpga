@@ -1,0 +1,22 @@
+// SPDX-License-Identifier: GPL-2.0+
+/*
+ * U-Boot additions
+ *
+ * Copyright (C) 2012 Altera Corporation <www.altera.com>
+ * Copyright (c) 2018 Simon Goldschmidt
+ * Copyright (C) 2020 Critical Link LLC <www.criticallink.com>
+ */
+
+/*
+ * This dtsi is automagically included by the dts with the matching prefix
+ * (before "-u-boot.dtsi"). It pulls in our U-Boot-specific changes so the
+ * main dts can stay synced with its Linux counterpart.
+ */
+
+#include "socfpga_mitysom5cs-u-boot.dtsi"
+
+/{
+	/* With CONFIG_DISPLAY_BOARDINFO or CONFIG_DISPLAY_BOARDINFO_LATE, this
+	 * model string is displayed in the console */
+	model = "MitySOM-5CSE-L2-3Y8 Altera SOCFPGA Cyclone V";
+};
